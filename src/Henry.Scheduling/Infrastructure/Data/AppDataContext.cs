@@ -16,5 +16,11 @@ namespace Henry.Scheduling.Infrastructure.Data
         public DbSet<Appointment> Appointments { get; set; }
 
         public DbSet<Slot> Slots { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(Provider.EntityConfiguration).Assembly);
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace Henry.Scheduling.Api
             {
                 options.EnableSensitiveDataLogging();
                 options.UseSqlServer(config,
-                    b => b.MigrationsAssembly("Henry.Scheduling"));
+                    b => b.MigrationsAssembly("Henry.Scheduling.Api"));
             });
 
             await using var serviceProvider = builder.Services.BuildServiceProvider();
