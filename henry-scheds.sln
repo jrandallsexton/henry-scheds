@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Henry.Scheduling.Api", "src\Henry.Scheduling.Api\Henry.Scheduling.Api.csproj", "{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Henry.Scheduling.Tests.Unit", "test\Henry.Scheduling.Tests.Unit\Henry.Scheduling.Tests.Unit.csproj", "{F87C0C4C-9059-4895-B27E-D33A3B11BE61}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Henry.Scheduling.Api.Tests.Unit", "test\Henry.Scheduling.Api.Tests.Unit\Henry.Scheduling.Api.Tests.Unit.csproj", "{C43D538C-89C4-495F-A761-BDCD8D29309C}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{176755FF-3802-46EF-92ED-D7F3B48AA961}"
@@ -27,10 +25,6 @@ Global
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F87C0C4C-9059-4895-B27E-D33A3B11BE61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F87C0C4C-9059-4895-B27E-D33A3B11BE61}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F87C0C4C-9059-4895-B27E-D33A3B11BE61}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F87C0C4C-9059-4895-B27E-D33A3B11BE61}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C43D538C-89C4-495F-A761-BDCD8D29309C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C43D538C-89C4-495F-A761-BDCD8D29309C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C43D538C-89C4-495F-A761-BDCD8D29309C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,7 +39,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175} = {75077F58-986A-46B9-8BFF-627A09EBE08B}
-		{F87C0C4C-9059-4895-B27E-D33A3B11BE61} = {7F66B0D4-4215-4952-B852-52A9DC666931}
 		{C43D538C-89C4-495F-A761-BDCD8D29309C} = {7F66B0D4-4215-4952-B852-52A9DC666931}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
