@@ -9,13 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7F66B0D4-4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{99D845D0-5933-4A67-8357-98DBDB61F18F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Henry.Scheduling", "src\Henry.Scheduling\Henry.Scheduling.csproj", "{48556E89-893D-4233-959B-413DEE2C5683}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Henry.Scheduling.Api", "src\Henry.Scheduling.Api\Henry.Scheduling.Api.csproj", "{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Henry.Scheduling.Api", "src\Henry.Scheduling.Api\Henry.Scheduling.Api.csproj", "{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Henry.Scheduling.Tests.Unit", "test\Henry.Scheduling.Tests.Unit\Henry.Scheduling.Tests.Unit.csproj", "{F87C0C4C-9059-4895-B27E-D33A3B11BE61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Henry.Scheduling.Tests.Unit", "test\Henry.Scheduling.Tests.Unit\Henry.Scheduling.Tests.Unit.csproj", "{F87C0C4C-9059-4895-B27E-D33A3B11BE61}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Henry.Scheduling.Api.Tests.Unit", "test\Henry.Scheduling.Api.Tests.Unit\Henry.Scheduling.Api.Tests.Unit.csproj", "{C43D538C-89C4-495F-A761-BDCD8D29309C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Henry.Scheduling.Api.Tests.Unit", "test\Henry.Scheduling.Api.Tests.Unit\Henry.Scheduling.Api.Tests.Unit.csproj", "{C43D538C-89C4-495F-A761-BDCD8D29309C}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{176755FF-3802-46EF-92ED-D7F3B48AA961}"
 EndProject
@@ -25,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{48556E89-893D-4233-959B-413DEE2C5683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48556E89-893D-4233-959B-413DEE2C5683}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48556E89-893D-4233-959B-413DEE2C5683}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48556E89-893D-4233-959B-413DEE2C5683}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,7 +44,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{48556E89-893D-4233-959B-413DEE2C5683} = {75077F58-986A-46B9-8BFF-627A09EBE08B}
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175} = {75077F58-986A-46B9-8BFF-627A09EBE08B}
 		{F87C0C4C-9059-4895-B27E-D33A3B11BE61} = {7F66B0D4-4215-4952-B852-52A9DC666931}
 		{C43D538C-89C4-495F-A761-BDCD8D29309C} = {7F66B0D4-4215-4952-B852-52A9DC666931}

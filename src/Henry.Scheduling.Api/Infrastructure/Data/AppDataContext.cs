@@ -1,11 +1,12 @@
-﻿using Henry.Scheduling.Infrastructure.Data.Entities;
-
+﻿using Henry.Scheduling.Api.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Henry.Scheduling.Infrastructure.Data
+namespace Henry.Scheduling.Api.Infrastructure.Data
 {
     public class AppDataContext : DbContext
     {
+        public AppDataContext() { }
+
         public AppDataContext(DbContextOptions<AppDataContext> options) :
             base(options) { }
 

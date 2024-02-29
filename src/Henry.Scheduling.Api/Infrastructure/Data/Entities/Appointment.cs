@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using System;
-
-namespace Henry.Scheduling.Infrastructure.Data.Entities
+namespace Henry.Scheduling.Api.Infrastructure.Data.Entities
 {
     public class Appointment : EntityBase
     {

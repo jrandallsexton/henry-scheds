@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Henry.Scheduling.Infrastructure.Data.Entities
+namespace Henry.Scheduling.Api.Infrastructure.Data.Entities
 {
     public class Slot : EntityBase
     {

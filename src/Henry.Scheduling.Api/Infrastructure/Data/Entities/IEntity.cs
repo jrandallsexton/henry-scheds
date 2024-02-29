@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Henry.Scheduling.Infrastructure.Data.Entities
+namespace Henry.Scheduling.Api.Infrastructure.Data.Entities
 {
     public interface IEntity
     {

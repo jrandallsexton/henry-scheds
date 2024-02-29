@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Henry.Scheduling.Infrastructure.Data.Entities
+namespace Henry.Scheduling.Api.Infrastructure.Data.Entities
 {
     public abstract class EntityBase : IEntity
     {

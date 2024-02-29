@@ -1,9 +1,8 @@
 
 using System.Threading.Tasks;
 using Hangfire;
-
+using Henry.Scheduling.Api.Infrastructure.Data;
 using Henry.Scheduling.Api.Middleware;
-using Henry.Scheduling.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
