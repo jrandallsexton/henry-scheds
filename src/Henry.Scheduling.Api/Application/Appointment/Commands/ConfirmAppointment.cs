@@ -67,6 +67,8 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
                     throw new ResourceNotFoundException("Invalid appointment");
                 }
 
+                // TODO: What if the appointment has been expired, but yet the slot was still open (eventual consistency)
+
                 appointment.ConfirmedUtc = _dateTimeProvider.UtcNow();
 
                 // TODO: Raise integration event for downstream consumers (e.g. notification svc to send email to client)
