@@ -38,7 +38,6 @@ Small API for facilitating client-provider reservations (appointments)
 
 ## Running the Service
 - Docker Compose file is provided; set the startup project to it
-- Postman collection in repository root
 
 ## Closing Thoughts
 - Project should have just been named Henry.Scheudling and not Henry.Scheduling.Api
@@ -50,6 +49,7 @@ Small API for facilitating client-provider reservations (appointments)
 - Exercise was stated to be completed within 2-3 hours; this was done in roughly 4-5 hours
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
 - MediatR handlers use nested classes; this is not normal and can easily be reworked - but makes the handler a self-contained unit.  For people unaccustomed to working with this pattern, it might seem odd.
+- So much more work could be done on this, but time constraints simply do not allow.  Nothing worse for a dev than to be forced to have half-written code exposed for the world to see.
 ## Diagram
 - Diagram created using [Mermaid](https://mermaid.js.org/)
 ```mermaid
