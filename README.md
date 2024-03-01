@@ -50,6 +50,9 @@ Small API for facilitating client-provider reservations (appointments)
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
 - MediatR handlers use nested classes; this is not normal and can easily be reworked - but makes the handler a self-contained unit.  For people unaccustomed to working with this pattern, it might seem odd.
 - So much more work could be done on this, but time constraints simply do not allow.  Nothing worse for a dev than to be forced to have half-written code exposed for the world to see.
+- EF entities are not optimized; better structure could likely be had
+- No caching is involved for getting a list of available slots
+- etc., etc., etc.
 ## Diagram
 - Diagram created using [Mermaid](https://mermaid.js.org/)
 - Better diagram showing how this service should really fit into a microservices-based architecture can be found [here](https://github.com/jrandallsexton/sports-data-core)
