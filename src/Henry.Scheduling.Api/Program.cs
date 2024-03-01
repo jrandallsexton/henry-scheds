@@ -1,22 +1,25 @@
 
-using System;
 using FluentValidation;
 
 using Hangfire;
 
+using Henry.Scheduling.Api.Common;
 using Henry.Scheduling.Api.Infrastructure.Data;
+using Henry.Scheduling.Api.Infrastructure.Data.Entities;
 using Henry.Scheduling.Api.Middleware;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
+using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Henry.Scheduling.Api.Common;
-using Henry.Scheduling.Api.Infrastructure.Data.Entities;
+using FluentValidation.AspNetCore;
 
 namespace Henry.Scheduling.Api
 {
@@ -31,18 +34,23 @@ namespace Henry.Scheduling.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Add services
+            builder.Services.ConfigureServices();
+
             // Add Hangfire
             builder.Services.ConfigureHangfire(builder.Configuration);
 
             // Add FluentValidation
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddFluentValidationClientsideAdapters();
             builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+            // Add AutoMapper
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             // Add MediatR
-            builder.Services.AddMediatR(configuration =>
-            {
-                configuration.AutoRegisterRequestProcessors = true;
-                configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            });
+            builder.Services.AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             // Add Data Persistence
             builder.Services.AddDbContext<AppDataContext>(options =>
@@ -51,18 +59,27 @@ namespace Henry.Scheduling.Api
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AppDataContext"));
             });
 
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(s => s.FullName.Replace("+", "."));
+            });
+
             // Apply Migrations
             await using var serviceProvider = builder.Services.BuildServiceProvider();
             var context = serviceProvider.GetRequiredService<AppDataContext>();
             await context.Database.MigrateAsync();
             //await context.Database.EnsureCreatedAsync();
+            serviceProvider.ConfigureHangfireJobs();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
+                app.UseSwagger(x =>
+                {
+                    x.SerializeAsV2 = true;
+                });
                 app.UseSwaggerUI();
                 app.UseHangfireDashboard("/dashboard", new DashboardOptions
                 {
@@ -77,6 +94,8 @@ namespace Henry.Scheduling.Api
 
             app.MapControllers();
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
             await app.RunAsync();
         }
 
@@ -89,13 +108,28 @@ namespace Henry.Scheduling.Api
             // create some Providers
             for (var i = 0; i < 20; i++)
             {
-                await dataContext.Providers.AddAsync(new Provider()
+                var provider = new Provider()
                 {
                     Id = Guid.NewGuid(),
                     CreatedBy = Constants.UserIdSystem,
                     CreatedUtc = DateTime.UtcNow,
                     Name = $"Provider_{i}"
-                });
+                };
+
+                // create some slots for the provider
+                for (var j = 0; j < 20; j++)
+                {
+                    provider.Slots.Add(new Slot()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedBy = Constants.UserIdSystem,
+                        CreatedUtc = DateTime.UtcNow,
+                        StartUtc = DateTime.UtcNow.AddDays(j + 2),
+                        EndUtc = DateTime.UtcNow.AddMinutes(j * 15),
+                        ProviderId = provider.Id
+                    });
+                }
+                await dataContext.Providers.AddAsync(provider);
             }
 
             // create some clients
@@ -110,9 +144,9 @@ namespace Henry.Scheduling.Api
                 });
             }
 
-            // create some slots for the providers
-
             // create some appointments
+
+            await dataContext.SaveChangesAsync();
         }
     }
 }

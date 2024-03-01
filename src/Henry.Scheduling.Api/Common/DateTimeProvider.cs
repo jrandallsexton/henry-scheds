@@ -7,7 +7,7 @@ namespace Henry.Scheduling.Api.Common
         DateTime UtcNow();
     }
 
-    public class DataTimeProvider : IDateTimeProvider
+    public class DateTimeProvider : IDateTimeProvider
     {
         public DateTime UtcNow()
         {

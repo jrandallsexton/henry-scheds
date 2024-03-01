@@ -9,9 +9,9 @@ namespace Henry.Scheduling.Api.Infrastructure.Data.Entities
     {
         public string Name { get; set; }
 
-        public List<Slot> Slots { get; set; }
+        public List<Slot> Slots { get; set; } = [];
 
-        public List<Appointment> Appointments { get; set; }
+        public List<Appointment> Appointments { get; set; } = [];
 
         public class EntityConfiguration : IEntityTypeConfiguration<Provider>
         {

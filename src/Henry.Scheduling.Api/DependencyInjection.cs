@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 
 using Henry.Scheduling.Api.Application.Appointment.Commands;
+using Henry.Scheduling.Api.Common;
 using Henry.Scheduling.Api.Infrastructure.Jobs;
 
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,9 @@ namespace Henry.Scheduling.Api
 
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
+            // services
+            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+
             // hangfire job
             services.AddScoped<IExpireReservations, ReservationExpiryJob>();
 

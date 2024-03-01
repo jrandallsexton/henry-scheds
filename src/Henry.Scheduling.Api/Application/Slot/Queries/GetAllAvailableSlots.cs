@@ -29,6 +29,11 @@ namespace Henry.Scheduling.Api.Application.Slot.Queries
             public DateTime StartUtc { get; set; }
 
             public DateTime EndUtc { get; set; }
+
+            public void Mapping(Profile profile)
+            {
+                profile.CreateMap<Infrastructure.Data.Entities.Slot, Dto>();
+            }
         }
 
         public class Handler : IRequestHandler<Query, List<Dto>>
@@ -39,8 +44,8 @@ namespace Henry.Scheduling.Api.Application.Slot.Queries
 
             public Handler(
                 AppDataContext dataContext,
-                IDateTimeProvider dateTimeProvider
-                , IMapper mapper)
+                IDateTimeProvider dateTimeProvider,
+                IMapper mapper)
             {
                 _dataContext = dataContext;
                 _dateTimeProvider = dateTimeProvider;

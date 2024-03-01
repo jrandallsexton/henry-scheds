@@ -11,6 +11,8 @@ namespace Henry.Scheduling.Api.Infrastructure.Data.Entities
 
         public Guid ClientId { get; set; }
 
+        public Guid ProviderId { get; set; }
+
         public DateTime? ConfirmedUtc { get; set; }
 
         public DateTime? ExpiredUtc { get; set; }
