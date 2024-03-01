@@ -43,8 +43,8 @@ Small API for facilitating client-provider reservations (appointments)
     - GET to api/slots. Save the slotId.
 - Confirm an appointment
     - POST to api/appointments. Provide body shown in Swagger.
-        - < 24 hour rule will be honored
-        - > 24 hour rule will create appointment
+        - < 24 hour rule will be honored (denied)
+        - \> 24 hour rule will create appointment
         - save the appointmentId returned by the POST
             - due to time constraints and lack of user awareness, you'll still need to provide a body along with the id in the url
             - the appointmentId will be returned for a 200Ok
