@@ -70,11 +70,14 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
                 if (slot.AppointmentId.HasValue)
                 {
+                    // TODO: This could probably be more explicit
+                    // i.e. if the appointmentId is one that belongs to the current client,
+                    // we might want to provide a more specific message (i.e. you already booked this slot)
                     _logger.LogError("Slot is no longer available", command.SlotId);
                     throw new InvalidCommandException("Slot is no longer available");
                 }
 
-                if (slot.StartUtc > _dateTimeProvider.UtcNow().AddHours(24))
+                if (slot.StartUtc < _dateTimeProvider.UtcNow().AddHours(24))
                 {
                     _logger.LogError("Slot is less than 24 hours from now", command.SlotId);
                     throw new InvalidCommandException("Slot is less than 24 hours from now");
@@ -93,7 +96,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
                 slot.AppointmentId = appointment.Id;
 
-                // TODO: Raise integration event as downstream service will likely send confirmation email to client
+                // TODO: Raise integration event; downstream service will likely send confirmation email to client
 
                 await _dataContext.SaveChangesAsync(cancellationToken);
 

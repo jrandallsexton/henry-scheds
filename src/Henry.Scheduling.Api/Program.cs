@@ -124,8 +124,8 @@ namespace Henry.Scheduling.Api
                         Id = Guid.NewGuid(),
                         CreatedBy = Constants.UserIdSystem,
                         CreatedUtc = DateTime.UtcNow,
-                        StartUtc = DateTime.UtcNow.AddDays(j + 2),
-                        EndUtc = DateTime.UtcNow.AddMinutes(j * 15),
+                        StartUtc = DateTime.UtcNow.AddDays(j),
+                        EndUtc = DateTime.UtcNow.AddDays(j).AddMinutes(j * 15),
                         ProviderId = provider.Id
                     });
                 }

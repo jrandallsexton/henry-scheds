@@ -8,17 +8,18 @@ Small API for facilitating client-provider reservations (appointments)
     - Each _slot_ is 15 minutes in duration
 - A _client_ can obtain a list of available slots
     - A _slot_ can be reserved thereby generating an _appointment_ within the system
-    - An _appointment_ will auto-expire if not confirmed within 15 minutes of creation
+    - An _appointment_ will [auto-expire](https://github.com/jrandallsexton/henry-scheds/blob/main/src/Henry.Scheduling.Api/Infrastructure/Jobs/ReservationExpiryJob.cs) if not confirmed within 15 minutes of creation
     - An _appointment_ cannot be created for a slot within 24 hours of the _slot_'s specified time
 ## Decisions
+- [Vertical Slice Architecture](https://www.jimmybogard.com/vertical-slice-architecture/)
 - Use of [MediatR](https://github.com/jbogard/MediatR) and [CQRS](https://martinfowler.com/bliki/CQRS.html) pattern for handling API actions
 - SQL Server for persistence
 - [FluentValidation](https://docs.fluentvalidation.net/en/latest/) for ensuring integrity of commands and queries
 - [Automapper](https://automapper.org/) for simple mapping of entities to DTOs
 - [MediatR](https://github.com/jbogard/MediatR) handlers use dbContext directly instead of a repository (time constraints)
-- [Hangfire](https://www.hangfire.io/) for the cron job that expires reservations not confirmed within 30 minutes
+- [Hangfire](https://www.hangfire.io/) for the [cron job](https://github.com/jrandallsexton/henry-scheds/blob/main/src/Henry.Scheduling.Api/Infrastructure/Jobs/ReservationExpiryJob.cs) that expires reservations not confirmed within 30 minutes
     - Cron job fires every minute
-    - Reservations not confirmed within 30 minutes are passed off via fire-and-forget to another MediatR handler for expiry process
+    - Reservations not confirmed within 30 minutes are passed off via fire-and-forget to another MediatR [handler](https://github.com/jrandallsexton/henry-scheds/blob/main/src/Henry.Scheduling.Api/Application/Appointment/Commands/ExpireAppointment.cs) for expiry process
     - Should something happen with the handler, the cron job would send it for expiry the following minute
     - Automatically retries jobs (configurable)
     - Dashboard is available at [_/dashboard_](https://localhost:63632/dashboard)
@@ -37,13 +38,29 @@ Small API for facilitating client-provider reservations (appointments)
 
 ## Running the Service
 - Docker Compose file is provided; set the startup project to it
+- Postman collection in repository root
 
 ## Closing Thoughts
+- Project should have just been named Henry.Scheudling and not Henry.Scheduling.Api
+- Postman collection should have been updated to use a variable for the root url
+- MediatR handlers should likely be using some sort of ServiceResult<T> instead of a DTO
 - Many of the classes within the Application namespace are empty - placed there to show more about my thought process and how the pattern I chose would look over-time
 - As of recent, I have really begun to rethink the usage of the ExceptionHandlingMiddleware and want to change it - but this is a tried & true pattern that I know works. Drawback?  Exceptions are expensive and there are better ways of returning the correct HTTP result to the API client
 - Instead of _Provider_ and _Client_ entities, it really should have been more _User-centric_ and allowed the application to obtain required IDs for commands/queries to be determined via HTTP Context
 - Exercise was stated to be completed within 2-3 hours; this was done in roughly 4-5 hours
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
-
+- MediatR handlers use nested classes; this is not normal and can easily be reworked - but makes the handler a self-contained unit.  For people unaccustomed to working with this pattern, it might seem odd.
 ## Diagram
 - Diagram created using [Mermaid](https://mermaid.js.org/)
+```mermaid
+flowchart BT
+    subgraph Henry.Scheduling
+        HF[hangfire]
+        DB2[(Scheduling)]
+        APP-->DB2
+        API[API]
+        API-->APP
+        HF-->DB2
+        HF-->APP
+    end
+```

@@ -1,17 +1,17 @@
 ﻿using FluentValidation;
 
 using Henry.Scheduling.Api.Common;
+using Henry.Scheduling.Api.Common.Exceptions;
 using Henry.Scheduling.Api.Infrastructure.Data;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Henry.Scheduling.Api.Common.Exceptions;
-using Microsoft.EntityFrameworkCore;
 
 namespace Henry.Scheduling.Api.Application.Appointment.Commands
 {

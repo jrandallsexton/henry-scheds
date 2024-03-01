@@ -33,6 +33,10 @@ namespace Henry.Scheduling.Api.Tests.Unit.Application.Slot.Commands
             result.ShouldHaveValidationErrorFor(x => x.StartUtc);
         }
 
+        /// <summary>
+        /// This test class should be using inline data to cover all edge cases
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task ValidCommand_CreatesSlots()
         {

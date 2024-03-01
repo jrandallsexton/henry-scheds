@@ -1,10 +1,10 @@
-﻿using System;
-using Henry.Scheduling.Api.Application.Appointment.Commands;
+﻿using Henry.Scheduling.Api.Application.Appointment.Commands;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
+using System;
 using System.Threading.Tasks;
 
 namespace Henry.Scheduling.Api.Application.Appointment
@@ -30,15 +30,20 @@ namespace Henry.Scheduling.Api.Application.Appointment
         }
 
         [HttpPut("{id}/confirm")]
-        public async Task<ActionResult<ConfirmAppointment.Dto>> ConfirmAppointment(Guid id)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<ConfirmAppointment.Dto>> ConfirmAppointment(Guid id,
+            [FromBody]ConfirmAppointment.Command command)
         {
-            var command = new ConfirmAppointment.Command()
+            // TODO: In real-life, we would (likely) take the ClientId from context
+            // and remove the need for the body
+            // As a result, this looks NOTHING like it would for real
+            var tempCommand = new ConfirmAppointment.Command()
             {
                 AppointmentId = id,
-                ClientId = Guid.NewGuid()
+                ClientId = command.ClientId
             };
-
-            return await _mediator.Send(command);
+            return await _mediator.Send(tempCommand);
         }
     }
 }
