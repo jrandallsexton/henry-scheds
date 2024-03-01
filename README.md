@@ -52,6 +52,7 @@ Small API for facilitating client-provider reservations (appointments)
 - So much more work could be done on this, but time constraints simply do not allow.  Nothing worse for a dev than to be forced to have half-written code exposed for the world to see.
 ## Diagram
 - Diagram created using [Mermaid](https://mermaid.js.org/)
+- Better diagram showing how this service should really fit into a microservices-based architecture can be found [here](https://github.com/jrandallsexton/sports-data-core)
 ```mermaid
 flowchart BT
     subgraph Henry.Scheduling
