@@ -47,7 +47,7 @@ Small API for facilitating client-provider reservations (appointments)
         - \> 24 hour rule will create appointment
         - save the appointmentId returned by the POST
             - due to time constraints and lack of user awareness, you'll still need to provide a body along with the id in the url
-            - the appointmentId will be returned for a 200Ok
+            - the appointmentId will be returned with a 200(Ok)
 - Provider schedule:
     - POST to api/providers/{id}/schedule
         - handler will create slots based on start/end utc dateTimes
@@ -57,7 +57,7 @@ Small API for facilitating client-provider reservations (appointments)
 - Postman collection should have been updated to use a variable for the root url
 - MediatR handlers should likely be using some sort of ServiceResult<T> instead of a DTO
 - Many of the classes within the Application namespace are empty - placed there to show more about my thought process and how the pattern I chose would look over-time
-- As of recent, I have really begun to rethink the usage of the ExceptionHandlingMiddleware and want to change it - but this is a tried & true pattern that I know works. Drawback?  Exceptions are expensive and there are better ways of returning the correct HTTP result to the API client
+- As of recent, I have really begun to rethink the usage of the [ExceptionHandlingMiddleware](https://github.com/jrandallsexton/henry-scheds/blob/main/src/Henry.Scheduling.Api/Middleware/ExceptionHandlingMiddleware.cs) and want to change it - but this is a tried & true pattern that I know works. Drawback?  Exceptions are expensive and there are better ways of returning the correct HTTP result to the API client
 - Instead of _Provider_ and _Client_ entities, it really should have been more _User-centric_ and allowed the application to obtain required IDs for commands/queries to be determined via HTTP Context
 - Exercise was stated to be completed within 2-3 hours; this was done in roughly 4-5 hours
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
