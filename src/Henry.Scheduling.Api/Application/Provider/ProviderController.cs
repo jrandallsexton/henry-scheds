@@ -1,9 +1,11 @@
-﻿using Henry.Scheduling.Api.Application.Slot.Commands;
+﻿using Henry.Scheduling.Api.Application.Provider.Queries;
+using Henry.Scheduling.Api.Application.Slot.Commands;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Henry.Scheduling.Api.Application.Provider
@@ -26,6 +28,12 @@ namespace Henry.Scheduling.Api.Application.Provider
         {
             var result = await _mediator.Send(command);
             return Created(nameof(CreateSlotsFromSchedule), result);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<GetAllProviders.Dto>>> GetAllProviders()
+        {
+            return await _mediator.Send(new GetAllProviders.Query());
         }
     }
 }
