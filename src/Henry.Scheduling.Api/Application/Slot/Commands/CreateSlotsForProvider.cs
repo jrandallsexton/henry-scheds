@@ -1,16 +1,18 @@
 ﻿using FluentValidation;
 
+using Henry.Scheduling.Api.Common;
+using Henry.Scheduling.Api.Common.Exceptions;
+using Henry.Scheduling.Api.Infrastructure.Data;
+
 using MediatR;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Henry.Scheduling.Api.Common;
-using Henry.Scheduling.Api.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Henry.Scheduling.Api.Application.Slot.Commands
 {
@@ -68,7 +70,7 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
                 if (provider == null)
                 {
                     _logger.LogError("Invalid providerId", command.ProviderId);
-                    throw new ArgumentException($"Invalid providerId: {command.ProviderId}");
+                    throw new ResourceNotFoundException($"Invalid providerId: {command.ProviderId}");
                 }
 
                 // TODO: What if slots already exist for the period defined by the command?

@@ -8,6 +8,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7F66B0D4-4215-4952-B852-52A9DC666931}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{99D845D0-5933-4A67-8357-98DBDB61F18F}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Henry.Scheduling.Api", "src\Henry.Scheduling.Api\Henry.Scheduling.Api.csproj", "{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175}"
 EndProject
