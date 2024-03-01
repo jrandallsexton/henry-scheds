@@ -49,7 +49,7 @@ namespace Henry.Scheduling.Api.Application.Provider.Commands
 
             public async Task<Dto> Handle(Command command, CancellationToken cancellationToken)
             {
-                _logger.LogInformation("Handler began with command:", command);
+                _logger.LogInformation("Handler began with command: {command}", command);
 
                 var validationResult = await _validator.ValidateAsync(command, cancellationToken);
                 if (!validationResult.IsValid)

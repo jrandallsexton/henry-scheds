@@ -64,7 +64,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
                 if (slot == null)
                 {
-                    _logger.LogError("Invalid slotId", command.SlotId);
+                    _logger.LogError("Invalid slotId: {slotId}", command.SlotId);
                     throw new InvalidCommandException($"Invalid slotId: {command.SlotId}");
                 }
 
@@ -73,13 +73,13 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
                     // TODO: This could probably be more explicit
                     // i.e. if the appointmentId is one that belongs to the current client,
                     // we might want to provide a more specific message (i.e. you already booked this slot)
-                    _logger.LogError("Slot is no longer available", command.SlotId);
+                    _logger.LogError("Slot is no longer available: {slotId}", command.SlotId);
                     throw new InvalidCommandException("Slot is no longer available");
                 }
 
                 if (slot.StartUtc < _dateTimeProvider.UtcNow().AddHours(24))
                 {
-                    _logger.LogError("Slot is less than 24 hours from now", command.SlotId);
+                    _logger.LogError("Slot is less than 24 hours from now. {slotId}", command.SlotId);
                     throw new InvalidCommandException("Slot is less than 24 hours from now");
                 }
 

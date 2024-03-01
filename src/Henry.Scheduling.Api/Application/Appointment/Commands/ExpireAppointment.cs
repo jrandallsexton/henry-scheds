@@ -32,7 +32,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
         public async Task ProcessAsync(Guid appointmentId)
         {
-            _logger.LogInformation("Expiring appointment with id:", appointmentId);
+            _logger.LogInformation("Expiring appointment: {appointmentId}", appointmentId);
 
             var appointment = await _dataContext
                 .Appointments

@@ -69,7 +69,7 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
 
                 if (provider == null)
                 {
-                    _logger.LogError("Invalid providerId", command.ProviderId);
+                    _logger.LogError("Invalid providerId: {providerId}", command.ProviderId);
                     throw new ResourceNotFoundException($"Invalid providerId: {command.ProviderId}");
                 }
 
