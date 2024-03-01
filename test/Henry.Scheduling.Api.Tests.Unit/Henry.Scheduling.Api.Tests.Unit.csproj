@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\Provider\Commands\DevOpsTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
@@ -20,13 +24,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Appointment\Commands\" />
     <Folder Include="Application\Appointment\Queries\" />
-    <Folder Include="Application\Client\Commands\" />
     <Folder Include="Application\Client\Queries\" />
-    <Folder Include="Application\Provider\Commands\" />
     <Folder Include="Application\Provider\Queries\" />
     <Folder Include="Application\Slot\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Application\Provider\Commands\DevOpsTests.cs" />
   </ItemGroup>
 
 </Project>
