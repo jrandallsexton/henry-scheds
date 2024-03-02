@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 
 using Henry.Scheduling.Api.Common;
+using Henry.Scheduling.Api.Common.Commands;
 using Henry.Scheduling.Api.Common.Exceptions;
 using Henry.Scheduling.Api.Infrastructure.Data;
 
@@ -17,7 +18,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 {
     public class ConfirmAppointment
     {
-        public class Command : IRequest<Dto>
+        public class Command : TrackableCommand<Dto>
         {
             public Guid ClientId { get; set; }
             public Guid AppointmentId { get; set; }

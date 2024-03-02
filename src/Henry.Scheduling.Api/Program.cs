@@ -33,6 +33,9 @@ namespace Henry.Scheduling.Api
             var hostAssembly = Assembly.GetExecutingAssembly();
 
             builder.Services.AddControllers();
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CorrelationIdBehavior<,>));
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Middleware.ValidationBehavior<,>));
 
             builder.Services.AddEndpointsApiExplorer();
@@ -71,7 +74,7 @@ namespace Henry.Scheduling.Api
             await using var serviceProvider = builder.Services.BuildServiceProvider();
             var context = serviceProvider.GetRequiredService<AppDataContext>();
             await context.Database.MigrateAsync();
-            //await context.Database.EnsureCreatedAsync();
+
             serviceProvider.ConfigureHangfireJobs();
 
             var app = builder.Build();
@@ -79,10 +82,7 @@ namespace Henry.Scheduling.Api
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger(x =>
-                {
-                    x.SerializeAsV2 = true;
-                });
+                app.UseSwagger();
                 app.UseSwaggerUI();
                 app.UseHangfireDashboard("/dashboard", new DashboardOptions
                 {

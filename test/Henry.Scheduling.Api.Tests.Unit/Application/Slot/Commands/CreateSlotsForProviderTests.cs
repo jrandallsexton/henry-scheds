@@ -6,6 +6,7 @@ using Henry.Scheduling.Api.Application.Slot.Commands;
 using Henry.Scheduling.Api.Infrastructure.Data.Entities;
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -130,6 +131,42 @@ namespace Henry.Scheduling.Api.Tests.Unit.Application.Slot.Commands
 
             // assert
             result.SlotIds.Count.Should().Be(32);
+        }
+
+        [Fact]
+        public async Task ValidCommand_SlotExist_SlotIsNotDuplicated()
+        {
+            // arrange
+            var providerId = Guid.NewGuid();
+            await base.DataContext.Providers.AddAsync(new Provider()
+            {
+                Id = providerId,
+                Name = "foo",
+                Slots =
+                [
+                    new Infrastructure.Data.Entities.Slot()
+                    {
+                        StartUtc = new DateTime(2024, 02, 29, 8, 0, 0),
+                        EndUtc = new DateTime(2024, 02, 29, 8, 15, 0)
+                    }
+                ]
+            });
+            await base.DataContext.SaveChangesAsync();
+
+            var command = new CreateSlotsForProvider.Command()
+            {
+                ProviderId = providerId,
+                StartUtc = new DateTime(2024, 02, 29, 8, 0, 0),
+                EndUtc = new DateTime(2024, 02, 29, 8, 0, 0).AddHours(8)
+            };
+
+            var handler = base.Mocker.CreateInstance<CreateSlotsForProvider.Handler>();
+
+            // act
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            // assert
+            result.SlotIds.Count.Should().Be(31);
         }
     }
 }

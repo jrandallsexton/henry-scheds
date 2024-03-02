@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 
 using Henry.Scheduling.Api.Common;
+using Henry.Scheduling.Api.Common.Commands;
 using Henry.Scheduling.Api.Common.Exceptions;
 using Henry.Scheduling.Api.Infrastructure.Data;
 
@@ -19,7 +20,7 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
 {
     public class CreateSlotsForProvider
     {
-        public class Command : IRequest<Dto>
+        public class Command : TrackableCommand<Dto>
         {
             public Guid ProviderId { get; set; }
             public DateTime StartUtc { get; set; }
@@ -54,6 +55,7 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
             private readonly ILogger<CreateSlotsForProvider> _logger;
             private readonly AppDataContext _dataContext;
             private readonly IDateTimeProvider _dateTimeProvider;
+            private const int SlotDurationInMinutes = 15;
 
             public Handler(
                 ILogger<CreateSlotsForProvider> logger,
@@ -78,29 +80,31 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
                     throw new ResourceNotFoundException($"Invalid providerId: {command.ProviderId}");
                 }
 
-                // TODO: What if slots already exist for the period defined by the command?
-
                 // break it into timeslots
                 var startTime = command.StartUtc;
 
-                // TODO: These should come via the request itself
-                var correlationId = Guid.NewGuid();
-                var causationId = Guid.NewGuid();
-
                 while (startTime < command.EndUtc)
                 {
+                    // ensure a slot does not already exist prior to creating a new one
+                    var slotExists = provider.Slots.Any(p => p.StartUtc == startTime);
+                    if (slotExists)
+                    {
+                        // log something?
+                        startTime = startTime.AddMinutes(SlotDurationInMinutes);
+                        continue;
+                    }
+
                     provider.Slots.Add(new Infrastructure.Data.Entities.Slot()
                     {
                         StartUtc = startTime,
-                        EndUtc = startTime.AddMinutes(15),
+                        EndUtc = startTime.AddMinutes(SlotDurationInMinutes),
                         CreatedBy = command.ProviderId,
                         CreatedUtc = _dateTimeProvider.UtcNow(),
                         ProviderId = provider.Id,
-                        CorrelationId = correlationId,
-                        CausationId = causationId
+                        CorrelationId = command.CorrelationId
                     });
 
-                    startTime = startTime.AddMinutes(15);
+                    startTime = startTime.AddMinutes(SlotDurationInMinutes);
                 }
 
                 await _dataContext.SaveChangesAsync(cancellationToken);
@@ -109,7 +113,7 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
                 {
                     ProviderId = command.ProviderId,
                     SlotIds = provider.Slots
-                        .Where(x => x.CausationId == causationId)
+                        .Where(x => x.CorrelationId == command.CorrelationId)
                         .Select(y => y.Id)
                         .ToList()
                 };
