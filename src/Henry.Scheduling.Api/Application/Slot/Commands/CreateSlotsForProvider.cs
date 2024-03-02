@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +29,6 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
         public class Dto
         {
             public Guid ProviderId { get; set; }
-            public int SlotCreationCount { get; set; }
             public List<Guid> SlotIds { get; set; }
         }
 
@@ -36,11 +36,16 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
         {
             public Validator()
             {
-                RuleFor(x => x.StartUtc).NotEmpty();
-                RuleFor(x => x.EndUtc).NotEmpty();
-                // TODO: Rule to ensure EndUtc > StartUtc
-                // TODO: Rule to ensure that EndUtc is at least 15 min greater than StartUtc (would create a single slot)
-                // TODO: Rule to ensure StartUtc is 00/15/30/45
+                RuleFor(x => x.StartUtc).NotNull().NotEmpty()
+                    .WithMessage("StartUtc cannot be empty or null");
+                RuleFor(x => x.EndUtc).NotNull().NotEmpty()
+                    .WithMessage("EndUtc cannot be empty or null");
+                RuleFor(x => x.EndUtc).GreaterThan(x => x.StartUtc.AddMinutes(15))
+                    .WithMessage("EndUtc must be at least 15 minutes past StartUtc");
+                RuleFor(x => x.StartUtc.Minute).Must(x => x is 0 or 15 or 30 or 45)
+                    .WithMessage("StartUtc minutes must be one of: 00, 15, 30, or 45");
+                RuleFor(x => x.EndUtc.Minute).Must(x => x is 0 or 15 or 30 or 45)
+                    .WithMessage("EndUtc minutes must be one of: 00, 15, 30, or 45");
             }
         }
 
@@ -74,39 +79,39 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
                 }
 
                 // TODO: What if slots already exist for the period defined by the command?
-                
-                // get the duration between start and end
-                var duration = command.EndUtc - command.StartUtc;
 
-                var numberOfSlots = Math.Floor(duration.TotalMinutes / 15);
-
-                var slotCount = 0;
+                // break it into timeslots
                 var startTime = command.StartUtc;
+
+                // TODO: These should come via the request itself
+                var correlationId = Guid.NewGuid();
+                var causationId = Guid.NewGuid();
+
                 while (startTime < command.EndUtc)
                 {
                     provider.Slots.Add(new Infrastructure.Data.Entities.Slot()
                     {
-                        StartUtc = command.StartUtc,
-                        EndUtc = command.StartUtc.AddMinutes(15),
+                        StartUtc = startTime,
+                        EndUtc = startTime.AddMinutes(15),
                         CreatedBy = command.ProviderId,
-                        CreatedUtc = _dateTimeProvider.UtcNow()
+                        CreatedUtc = _dateTimeProvider.UtcNow(),
+                        ProviderId = provider.Id,
+                        CorrelationId = correlationId,
+                        CausationId = causationId
                     });
 
                     startTime = startTime.AddMinutes(15);
-                    slotCount++;
                 }
 
                 await _dataContext.SaveChangesAsync(cancellationToken);
 
-                // break it into timeslots
-
-                // save them
-
                 return new Dto()
                 {
                     ProviderId = command.ProviderId,
-                    SlotCreationCount = slotCount,
-                    SlotIds = new List<Guid>()
+                    SlotIds = provider.Slots
+                        .Where(x => x.CausationId == causationId)
+                        .Select(y => y.Id)
+                        .ToList()
                 };
             }
         }

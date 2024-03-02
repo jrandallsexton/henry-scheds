@@ -33,6 +33,73 @@ namespace Henry.Scheduling.Api.Tests.Unit.Application.Slot.Commands
             result.ShouldHaveValidationErrorFor(x => x.StartUtc);
         }
 
+        [Fact]
+        public async Task Missing_EndTime_FailsValidation()
+        {
+            // arrange
+            var command = new CreateSlotsForProvider.Command()
+            {
+                StartUtc = DateTime.UtcNow
+            };
+
+            // act
+            var result = await _validator.TestValidateAsync(command);
+
+            // assert
+            result.ShouldHaveValidationErrorFor(x => x.EndUtc);
+        }
+
+        [Fact]
+        public async Task StartTimeIsGreaterThanEndTime_FailsValidation()
+        {
+            // arrange
+            var command = new CreateSlotsForProvider.Command()
+            {
+                StartUtc = DateTime.UtcNow,
+                EndUtc = DateTime.UtcNow.AddHours(-1)
+            };
+
+            // act
+            var result = await _validator.TestValidateAsync(command);
+
+            // assert
+            result.ShouldHaveValidationErrorFor(x => x.EndUtc);
+        }
+
+        [Fact]
+        public async Task StartTimeMinuteIsNotValid_FailsValidation()
+        {
+            // arrange
+            var command = new CreateSlotsForProvider.Command()
+            {
+                StartUtc = new DateTime(2024, 02, 29, 8, 1, 0),
+                EndUtc = new DateTime(2024, 02, 29, 8, 0, 0).AddHours(8)
+            };
+
+            // act
+            var result = await _validator.TestValidateAsync(command);
+
+            // assert
+            result.ShouldHaveValidationErrorFor(x => x.StartUtc.Minute);
+        }
+
+        [Fact]
+        public async Task EndTimeMinuteIsNotValid_FailsValidation()
+        {
+            // arrange
+            var command = new CreateSlotsForProvider.Command()
+            {
+                StartUtc = new DateTime(2024, 02, 29, 8, 0, 0),
+                EndUtc = new DateTime(2024, 02, 29, 8, 1, 0).AddHours(8)
+            };
+
+            // act
+            var result = await _validator.TestValidateAsync(command);
+
+            // assert
+            result.ShouldHaveValidationErrorFor(x => x.EndUtc.Minute);
+        }
+
         /// <summary>
         /// This test class should be using inline data to cover all edge cases
         /// </summary>
@@ -62,7 +129,7 @@ namespace Henry.Scheduling.Api.Tests.Unit.Application.Slot.Commands
             var result = await handler.Handle(command, CancellationToken.None);
 
             // assert
-            result.SlotCreationCount.Should().Be(32);
+            result.SlotIds.Count.Should().Be(32);
         }
     }
 }

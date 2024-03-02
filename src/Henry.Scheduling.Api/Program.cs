@@ -1,5 +1,6 @@
 
 using FluentValidation;
+using FluentValidation.AspNetCore;
 
 using Hangfire;
 
@@ -8,18 +9,19 @@ using Henry.Scheduling.Api.Infrastructure.Data;
 using Henry.Scheduling.Api.Infrastructure.Data.Entities;
 using Henry.Scheduling.Api.Middleware;
 
+using MediatR;
+using MediatR.Extensions.FluentValidation.AspNetCore;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using FluentValidation.AspNetCore;
 
 namespace Henry.Scheduling.Api
 {
@@ -28,8 +30,10 @@ namespace Henry.Scheduling.Api
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var hostAssembly = Assembly.GetExecutingAssembly();
 
             builder.Services.AddControllers();
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Middleware.ValidationBehavior<,>));
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -41,16 +45,15 @@ namespace Henry.Scheduling.Api
             builder.Services.ConfigureHangfire(builder.Configuration);
 
             // Add FluentValidation
-            builder.Services.AddFluentValidationAutoValidation();
-            builder.Services.AddFluentValidationClientsideAdapters();
-            builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.Services.AddFluentValidation([hostAssembly]);
+            builder.Services.AddValidatorsFromAssembly(hostAssembly);
 
             // Add AutoMapper
-            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            builder.Services.AddAutoMapper(hostAssembly);
 
             // Add MediatR
             builder.Services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+                cfg.RegisterServicesFromAssembly(hostAssembly));
 
             // Add Data Persistence
             builder.Services.AddDbContext<AppDataContext>(options =>
