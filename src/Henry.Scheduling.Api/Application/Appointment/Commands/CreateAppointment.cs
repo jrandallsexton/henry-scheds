@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 
 using Henry.Scheduling.Api.Common;
+using Henry.Scheduling.Api.Common.Commands;
 using Henry.Scheduling.Api.Common.Exceptions;
 using Henry.Scheduling.Api.Infrastructure.Data;
 
@@ -17,7 +18,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 {
     public class CreateAppointment
     {
-        public class Command : IRequest<Dto>
+        public class Command : TrackableCommand<Dto>
         {
             public Guid ClientId { get; set; }
             public Guid SlotId { get; set; }
@@ -89,7 +90,8 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
                     CreatedBy = command.ClientId,
                     CreatedUtc = _dateTimeProvider.UtcNow(),
                     SlotId = command.SlotId,
-                    ProviderId = slot.ProviderId
+                    ProviderId = slot.ProviderId,
+                    CorrelationId = command.CorrelationId
                 };
 
                 await _dataContext.Appointments.AddAsync(appointment, cancellationToken);

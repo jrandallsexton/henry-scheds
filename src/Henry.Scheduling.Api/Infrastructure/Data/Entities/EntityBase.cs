@@ -16,6 +16,10 @@ namespace Henry.Scheduling.Api.Infrastructure.Data.Entities
 
         public Guid? ModifiedBy { get; set; }
 
+        public Guid CausationId { get; set; } = Guid.Empty;
+
+        public Guid CorrelationId { get; set; } = Guid.Empty;
+
         public DateTime LastModified => ModifiedUtc ?? CreatedUtc;
     }
 }

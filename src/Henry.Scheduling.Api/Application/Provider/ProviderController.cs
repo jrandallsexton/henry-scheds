@@ -31,6 +31,7 @@ namespace Henry.Scheduling.Api.Application.Provider
         }
 
         [HttpGet]
+        [ProducesResponseType(200)]
         public async Task<ActionResult<List<GetAllProviders.Dto>>> GetAllProviders()
         {
             return await _mediator.Send(new GetAllProviders.Query());

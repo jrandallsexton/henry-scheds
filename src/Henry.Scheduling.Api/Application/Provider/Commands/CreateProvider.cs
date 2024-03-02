@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 
+using Henry.Scheduling.Api.Common.Commands;
 using Henry.Scheduling.Api.Infrastructure.Data;
 
 using MediatR;
@@ -15,7 +16,7 @@ namespace Henry.Scheduling.Api.Application.Provider.Commands
 {
     public class CreateProvider
     {
-        public class Command : IRequest<Dto>
+        public class Command : TrackableCommand<Dto>
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
@@ -83,7 +84,8 @@ namespace Henry.Scheduling.Api.Application.Provider.Commands
                 return new Infrastructure.Data.Entities.Provider()
                 {
                     Id = command.Id,
-                    Name = command.Name
+                    Name = command.Name,
+                    CorrelationId = command.CorrelationId
                 };
             }
         }
