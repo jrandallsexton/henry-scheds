@@ -121,7 +121,8 @@ namespace Henry.Scheduling.Api.Tests.Unit.Application.Slot.Commands
             {
                 ProviderId = providerId,
                 StartUtc = new DateTime(2024, 02, 29, 8, 0, 0),
-                EndUtc = new DateTime(2024, 02, 29, 8, 0, 0).AddHours(8)
+                EndUtc = new DateTime(2024, 02, 29, 8, 0, 0).AddHours(8),
+                CorrelationId = Guid.NewGuid()
             };
 
             var handler = base.Mocker.CreateInstance<CreateSlotsForProvider.Handler>();
