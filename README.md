@@ -1,11 +1,12 @@
 # henry-scheds for henry-meds
 
-Small API for facilitating client-provider reservations (appointments)
+Small API for facilitating client-provider reservations (appointments) based on available _slots_
 
 ## Overview
 
 - A _provider_ can submit their schedule which generates a collection of _slots_ within the system
     - Each _slot_ is 15 minutes in duration
+    - A submitted schedule should have the _minutes_ portion of the start/end times be in 15 min increments (i.e. ending in 00/15/30/45)
 - A _client_ can obtain a list of available slots
     - A _slot_ can be reserved thereby generating an _appointment_ within the system
     - An _appointment_ will [auto-expire](https://github.com/jrandallsexton/henry-scheds/blob/main/src/Henry.Scheduling.Api/Infrastructure/Jobs/ReservationExpiryJob.cs) if not confirmed within 15 minutes of creation
@@ -39,9 +40,9 @@ Small API for facilitating client-provider reservations (appointments)
 ## Running the Service
 - Docker Compose file is provided; set the startup project to it
 - Book an appointment:
-    - GET to api/clients. Save a clientId.
-    - GET to api/slots. Save the slotId.
-- Confirm an appointment
+    - GET to api/clients. Make a note of a clientId for future use.
+    - GET to api/slots. Make a note of a slotId for future use.
+- Confirm an appointment:
     - POST to api/appointments. Provide body shown in Swagger.
         - < 24 hour rule will be honored (denied)
         - \> 24 hour rule will create appointment
@@ -55,13 +56,13 @@ Small API for facilitating client-provider reservations (appointments)
 ## Closing Thoughts
 - Project should have just been named Henry.Scheduling and not Henry.Scheduling.Api
 - Postman collection should have been updated to use a variable for the root url
-- MediatR handlers should likely be using some sort of ServiceResult<T> instead of a DTO
+- MediatR handlers should likely be using some sort of ServiceResult\<T> instead of a DTO
 - Many of the classes within the Application namespace are empty - placed there to show more about my thought process and how the pattern I chose would look over-time
 - As of recent, I have really begun to rethink the usage of the [ExceptionHandlingMiddleware](https://github.com/jrandallsexton/henry-scheds/blob/main/src/Henry.Scheduling.Api/Middleware/ExceptionHandlingMiddleware.cs) and want to change it - but this is a tried & true pattern that I know works. Drawback?  Exceptions are expensive and there are better ways of returning the correct HTTP result to the API client
 - Instead of _Provider_ and _Client_ entities, it really should have been more _User-centric_ and allowed the application to obtain required IDs for commands/queries to be determined via HTTP Context
 - Exercise was stated to be completed within 2-3 hours; this was done in roughly 4-5 hours
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
-- MediatR handlers use nested classes; this is not normal and can easily be reworked. This approach, however, makes the handler a self-contained unit.  For people unaccustomed to working with this pattern, it might seem odd.
+- MediatR handlers use nested classes; this is not normal (outside of MediatR/CQRS) and can easily be reworked into a single-class/file pattern. This approach, however, makes the handler a fully self-contained unit.  [_For those unaccustomed to working with this, it might seem odd - or even incorrect_.]
 - EF entities are not optimized; better structure(s) could likely be had
 - No caching is involved
 - Perhaps your team prefers:
