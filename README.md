@@ -30,7 +30,7 @@ Small API for facilitating client-provider reservations (appointments)
     - Log statements are constructed for [structured logging](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-8.0)
 ## Missing
 - Structured logging provider not implemented
-- Integration testing which would use [TestContainers](https://testcontainers.com/) to spin up the environment within Docker and perform actual HTTP requests against endpoints
+- Integration testing which would use [TestContainers](https://testcontainers.com/) to spin up the environment within Docker and perform actual HTTP requests against endpoints (not just in-memory via WebApplicationFactory)
 - [Transactional Outbox Pattern](https://microservices.io/patterns/data/transactional-outbox.html) for integration events (generally via some sort of event bus)
 - No repositories exist; direct usage of dbContext within MediatR handlers
 - No authentication or authorization
@@ -62,9 +62,8 @@ Small API for facilitating client-provider reservations (appointments)
 - Exercise was stated to be completed within 2-3 hours; this was done in roughly 4-5 hours
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
 - MediatR handlers use nested classes; this is not normal and can easily be reworked. This approach, however, makes the handler a self-contained unit.  For people unaccustomed to working with this pattern, it might seem odd.
-- So much more work could be done on this, but time constraints simply do not allow.  Nothing worse for a dev than to be forced to have half-written code exposed for the world to see.
-- EF entities are not optimized; better structure could likely be had
-- No caching is involved for getting a list of available slots
+- EF entities are not optimized; better structure(s) could likely be had
+- No caching is involved
 - Perhaps your team prefers:
     - minimal APIs
     - separate assemblies for contracts or some other relation of classes
@@ -72,6 +71,7 @@ Small API for facilitating client-provider reservations (appointments)
     - usings within namespaces
     - 1:1 ratio b/w files/classes (the norm)
     - “You can please some of the people all of the time, you can please all of the people some of the time, but you can’t please all of the people all of the time”
+- So much more work could be done on this, but time constraints simply do not allow.  Nothing worse for a dev than to be forced to have half-written code exposed for the world to see.
 - etc., etc., etc.
 ## Diagram
 - Diagram created using [Mermaid](https://mermaid.js.org/)
