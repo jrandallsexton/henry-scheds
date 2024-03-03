@@ -65,6 +65,13 @@ Small API for facilitating client-provider reservations (appointments)
 - So much more work could be done on this, but time constraints simply do not allow.  Nothing worse for a dev than to be forced to have half-written code exposed for the world to see.
 - EF entities are not optimized; better structure could likely be had
 - No caching is involved for getting a list of available slots
+- Perhaps your team prefers:
+    - minimal APIs
+    - separate assemblies for contracts or some other relation of classes
+    - global/implicit usings
+    - usings within namespaces
+    - 1:1 ratio b/w files/classes (the norm)
+    - “You can please some of the people all of the time, you can please all of the people some of the time, but you can’t please all of the people all of the time”
 - etc., etc., etc.
 ## Diagram
 - Diagram created using [Mermaid](https://mermaid.js.org/)
