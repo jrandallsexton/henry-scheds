@@ -27,8 +27,8 @@ Small API for facilitating client-provider reservations (appointments)
     - [XUnit](https://xunit.net/) for framework
     - [FluentAssertions](https://fluentassertions.com/) for test assertions
     - [SQL Server In-Memory](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/) for dbContext setups
+    - Log statements are constructed for [structured logging](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-8.0)
 ## Missing
-- Log statements are constructed for [structured logging](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-8.0), therefore you will see warnings about formatting
 - Structured logging provider not implemented
 - Integration testing which would use [TestContainers](https://testcontainers.com/) to spin up the environment within Docker and perform actual HTTP requests against endpoints
 - [Transactional Outbox Pattern](https://microservices.io/patterns/data/transactional-outbox.html) for integration events (generally via some sort of event bus)
@@ -53,7 +53,7 @@ Small API for facilitating client-provider reservations (appointments)
         - handler will create slots based on start/end utc dateTimes
 
 ## Closing Thoughts
-- Project should have just been named Henry.Scheudling and not Henry.Scheduling.Api
+- Project should have just been named Henry.Scheduling and not Henry.Scheduling.Api
 - Postman collection should have been updated to use a variable for the root url
 - MediatR handlers should likely be using some sort of ServiceResult<T> instead of a DTO
 - Many of the classes within the Application namespace are empty - placed there to show more about my thought process and how the pattern I chose would look over-time
@@ -61,7 +61,7 @@ Small API for facilitating client-provider reservations (appointments)
 - Instead of _Provider_ and _Client_ entities, it really should have been more _User-centric_ and allowed the application to obtain required IDs for commands/queries to be determined via HTTP Context
 - Exercise was stated to be completed within 2-3 hours; this was done in roughly 4-5 hours
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
-- MediatR handlers use nested classes; this is not normal and can easily be reworked - but makes the handler a self-contained unit.  For people unaccustomed to working with this pattern, it might seem odd.
+- MediatR handlers use nested classes; this is not normal and can easily be reworked. This approach, however, makes the handler a self-contained unit.  For people unaccustomed to working with this pattern, it might seem odd.
 - So much more work could be done on this, but time constraints simply do not allow.  Nothing worse for a dev than to be forced to have half-written code exposed for the world to see.
 - EF entities are not optimized; better structure could likely be had
 - No caching is involved for getting a list of available slots
