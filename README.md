@@ -39,18 +39,21 @@ Small API for facilitating client-provider reservations (appointments) based on 
 
 ## Running the Service
 - Docker Compose file is provided; set the startup project to it
-- Book an appointment:
-    - GET to api/clients. Make a note of a clientId for future use.
-    - GET to api/slots. Make a note of a slotId for future use.
-- Confirm an appointment:
-    - POST to api/appointments. Provide body shown in Swagger.
+- Database will seed with a bunch of random providers, clients, and slots.
+- Book and confirm an appointment:
+    - GET to: api/clients. Make a note of a clientId for future use.
+    - GET to: api/slots. Make a note of a slotId for future use.
+    - POST to: api/appointments with the following body:
+        -   { "clientId": "guid", "slotId": "guid" }
         - < 24 hour rule will be honored (denied)
         - \> 24 hour rule will create appointment
         - save the appointmentId returned by the POST
-            - due to time constraints and lack of user awareness, you'll still need to provide a body along with the id in the url
             - the appointmentId will be returned with a 200(Ok)
+    - POST to: /api/appointments/{id:guid}/confirm
+        - use body: { "clientId": "guid", "appointmentId": "guid" }
+        - due to time constraints and lack of user awareness, you'll still need to provide a body along with the id in the url (technically a userId isn't necessary for this action either, but did not go back and change it)
 - Provider schedule:
-    - POST to api/providers/{id}/schedule
+    - POST to: api/providers/{id}/schedule
         - handler will create slots based on start/end utc dateTimes
 
 ## Closing Thoughts
