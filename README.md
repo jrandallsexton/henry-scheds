@@ -39,6 +39,9 @@ Small API for facilitating client-provider reservations (appointments) based on 
 - No authentication or authorization
 - Unit testing is minimal; only a couple of classes implemented to show general testing setups (TDD not utilized)
 - A provider (if also a client) could theoretically schedule an appointment (i.e. reserve a slot) with themself
+- No rate limiting
+- No response compression
+- etc., etc., etc.
 
 ## Running the Service
 - Docker Compose file is provided; set the startup project to it
