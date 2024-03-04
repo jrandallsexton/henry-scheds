@@ -46,7 +46,7 @@ Small API for facilitating client-provider reservations (appointments) based on 
     - POST to: api/appointments with the following body:
         -   { "clientId": "guid", "slotId": "guid" }
         - < 24 hour rule will be honored (denied)
-        - \> 24 hour rule will create appointment
+        - \>= 24 hour rule will create appointment
         - save the appointmentId returned by the POST
             - the appointmentId will be returned with a 200(Ok)
     - POST to: /api/appointments/{id:guid}/confirm
