@@ -7,7 +7,6 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY [".", "./src/Henry.Scheduling.Api"]
-RUN dotnet nuget add source https://pkgs.dev.azure.com/jrandallsexton/sport-deets/_packaging/sports-data-nuget/nuget/v3/index.json
 RUN dotnet restore "./src/Henry.Scheduling.Api/Henry.Scheduling.Api.csproj"
 COPY . .
 WORKDIR "/src/src/Henry.Scheduling.Api"
