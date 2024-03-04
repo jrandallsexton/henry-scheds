@@ -10,7 +10,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '31f2836a-84b3-4ad0-bf15-f4ea41754d06'
-  imageRepository: 'sportsdataprovider'
+  imageRepository: 'henryscheds'
   containerRegistry: 'sportdeetscr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/Henry.Scheduling.Api/Dockerfile'
   tag: '$(Build.BuildId)'
