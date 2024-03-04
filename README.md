@@ -28,11 +28,13 @@ Small API for facilitating client-provider reservations (appointments) based on 
     - [XUnit](https://xunit.net/) for framework
     - [FluentAssertions](https://fluentassertions.com/) for test assertions
     - [SQL Server In-Memory](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/) for dbContext setups
-    - Log statements are constructed for [structured logging](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-8.0)
+- Log statements are constructed for [structured logging](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-8.0)
 ## Missing
 - Structured logging provider not implemented
 - Integration testing which would use [TestContainers](https://testcontainers.com/) to spin up the environment within Docker and perform actual HTTP requests against endpoints (not just in-memory via WebApplicationFactory)
 - [Transactional Outbox Pattern](https://microservices.io/patterns/data/transactional-outbox.html) for integration events (generally via some sort of event bus)
+    -  Previously this would have been accomplished via the usage of two background services hosted in the API - one for sending and another for receiving
+    -  Newer approach would likely use [MassTransit](https://masstransit.io/documentation/patterns/transactional-outbox) as the pattern is supported out-of-the-box and allows for provider-agnostic usage
 - No repositories exist; direct usage of dbContext within MediatR handlers
 - No authentication or authorization
 - Unit testing is minimal; only a couple of classes implemented to show general testing setups (TDD not utilized)
