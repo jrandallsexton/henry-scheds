@@ -63,6 +63,7 @@ Small API for facilitating client-provider reservations (appointments) based on 
 - Provider schedule:
     - POST to: api/providers/{id}/schedule
         - handler will create slots based on start/end utc dateTimes
+- Postman collection can be found [here](https://app.getpostman.com/join-team?invite_code=49b6a916a157048a07167d94568cbf66)
 
 ## Closing Thoughts
 - Project should have just been named Henry.Scheduling and not Henry.Scheduling.Api
