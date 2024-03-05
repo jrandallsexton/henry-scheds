@@ -8,6 +8,14 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=1Secure*Password1
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 5341:5341
+      - 8081:80
   henry.scheduling.api:
     image: ${DOCKER_REGISTRY-}henryschedulingapi
     build:
@@ -15,3 +23,4 @@ services:
       dockerfile: src/Henry.Scheduling.Api/Dockerfile
     depends_on:
       - db
+      - seq

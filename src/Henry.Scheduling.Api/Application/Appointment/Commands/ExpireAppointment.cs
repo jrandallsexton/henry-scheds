@@ -52,6 +52,8 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
             // and that the appointment was expired
 
             await _dataContext.SaveChangesAsync();
+
+            _logger.LogInformation("Expired appointment: {appointmentId}", appointmentId);
         }
     }
 }

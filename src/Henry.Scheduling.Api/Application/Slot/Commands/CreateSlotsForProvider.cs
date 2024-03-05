@@ -69,6 +69,8 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
 
             public async Task<Dto> Handle(Command command, CancellationToken cancellationToken)
             {
+                _logger.LogInformation("Handler began with {@command}", command);
+
                 var provider = await _dataContext
                     .Providers
                     .Include(p => p.Slots)
