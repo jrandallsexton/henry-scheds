@@ -108,6 +108,8 @@ namespace Henry.Scheduling.Api
 
             app.MapControllers();
 
+            app.UseSerilogRequestLogging();
+
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             await app.RunAsync();
