@@ -67,7 +67,7 @@ Small API for facilitating client-provider reservations (appointments) based on 
 
 ## Closing Thoughts
 - Project should have just been named Henry.Scheduling and not Henry.Scheduling.Api
-- Postman collection should have been updated to use a variable for the root url
+- ~~Postman collection should have been updated to use a variable for the root url~~ (03/05 updated postman collection)
 - MediatR handlers should likely be using some sort of ServiceResult\<T> instead of a DTO
 - Many of the classes within the Application namespace are empty - placed there to show more about my thought process and how the pattern I chose would look over-time
 - As of recent, I have really begun to rethink the usage of the [ExceptionHandlingMiddleware](https://github.com/jrandallsexton/henry-scheds/blob/main/src/Henry.Scheduling.Api/Middleware/ExceptionHandlingMiddleware.cs) and want to change it - but this is a tried & true pattern that I know works. Drawback?  Exceptions are expensive and there are better ways of returning the correct HTTP result to the API client
