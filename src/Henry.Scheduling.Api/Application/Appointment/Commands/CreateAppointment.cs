@@ -60,6 +60,8 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
             public async Task<Dto> Handle(Command command, CancellationToken cancellationToken)
             {
+                _logger.LogInformation("Handler began with: {@command}", command);
+
                 var slot = await _dataContext.Slots
                     .FirstOrDefaultAsync(s => s.Id == command.SlotId, cancellationToken);
 

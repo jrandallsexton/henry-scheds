@@ -21,7 +21,9 @@ using Microsoft.Extensions.Hosting;
 
 using System;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Henry.Scheduling.Api
 {
@@ -40,6 +42,12 @@ namespace Henry.Scheduling.Api
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Add Serilog
+            builder.Host.UseSerilog((context, configuration) =>
+            {
+                configuration.ReadFrom.Configuration(context.Configuration);
+            });
 
             // Add services
             builder.Services.ConfigureServices();
@@ -83,7 +91,10 @@ namespace Henry.Scheduling.Api
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.HeadContent = "<a href=\"https://localhost:5001/dashboard\" target=\"_blank\">Hangfire Dashboard</a></br><a href=\"http://localhost:8081/#/events?range=1d\" target=\"_blank\">Seq</a>";
+                });
                 app.UseHangfireDashboard("/dashboard", new DashboardOptions
                 {
                     Authorization = new[] { new DashboardAuthFilter() }

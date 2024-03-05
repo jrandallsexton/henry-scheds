@@ -56,7 +56,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
             public async Task<Dto> Handle(Command command, CancellationToken cancellationToken)
             {
-                _logger.LogInformation("Handler began with: {command}", command);
+                _logger.LogInformation("Handler began with: {@command}", command);
 
                 var appointment = await _dataContext
                     .Appointments

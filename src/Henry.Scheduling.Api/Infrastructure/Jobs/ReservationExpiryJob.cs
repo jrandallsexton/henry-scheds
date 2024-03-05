@@ -44,6 +44,8 @@ namespace Henry.Scheduling.Api.Infrastructure.Jobs
                 .AsNoTracking()
                 .ToListAsync();
 
+            _logger.LogInformation("Found {expiredReservationsCount} reservations to expire", expiredAppointments.Count);
+
             // send them off for cancellation and downstream tasks
             expiredAppointments.ForEach(x =>
             {
