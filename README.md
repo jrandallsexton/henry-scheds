@@ -23,14 +23,16 @@ Small API for facilitating client-provider reservations (appointments) based on 
     - Reservations not confirmed within 30 minutes are passed off via fire-and-forget to another MediatR [handler](https://github.com/jrandallsexton/henry-scheds/blob/main/src/Henry.Scheduling.Api/Application/Appointment/Commands/ExpireAppointment.cs) for expiry process
     - Should something happen with the handler, the cron job would send it for expiry the following minute
     - Automatically retries jobs (configurable)
-    - Dashboard is available at [_/dashboard_](https://localhost:63632/dashboard)
+    - Dashboard is available [here](https://localhost:5001/dashboard)
 - Unit Testing
     - [XUnit](https://xunit.net/) for framework
     - [FluentAssertions](https://fluentassertions.com/) for test assertions
     - [SQL Server In-Memory](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/) for dbContext setups
 - Log statements are constructed for [structured logging](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-8.0)
+- [Serilog](https://serilog.net/) and [Seq](https://datalust.co/seq) for logging and visibility
+    - Seq event viewer available while debugging [here](http://localhost:8081/#/events?range=1d) 
 ## Missing
-- Structured logging provider not implemented
+- ~~Structured logging provider not implemented~~ (03/05 added Serilog and Seq)
 - Integration testing which would use [TestContainers](https://testcontainers.com/) to spin up the environment within Docker and perform actual HTTP requests against endpoints (not just in-memory via WebApplicationFactory)
 - [Transactional Outbox Pattern](https://microservices.io/patterns/data/transactional-outbox.html) for integration events (generally via some sort of event bus)
     -  Previously this would have been accomplished via the usage of two background services hosted in the API - one for sending and another for receiving
