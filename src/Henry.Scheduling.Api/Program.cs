@@ -19,11 +19,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Serilog;
+
 using System;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Serilog;
 
 namespace Henry.Scheduling.Api
 {
