@@ -54,17 +54,17 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
         {
             private readonly ILogger<CreateSlotsForProvider> _logger;
             private readonly AppDataContext _dataContext;
-            private readonly IDateTimeProvider _dateTimeProvider;
+            private readonly IGenerateSlots _slotGenerator;
             private const int SlotDurationInMinutes = 15;
 
             public Handler(
                 ILogger<CreateSlotsForProvider> logger,
                 AppDataContext dataContext,
-                IDateTimeProvider dateTimeProvider)
+                IGenerateSlots slotGenerator)
             {
                 _logger = logger;
                 _dataContext = dataContext;
-                _dateTimeProvider = dateTimeProvider;
+                _slotGenerator = slotGenerator;
             }
 
             public async Task<Dto> Handle(Command command, CancellationToken cancellationToken)
@@ -82,33 +82,10 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
                     throw new ResourceNotFoundException($"Invalid providerId: {command.ProviderId}");
                 }
 
-                // break it into timeslots
-                var startTime = command.StartUtc;
+                var slots = _slotGenerator.GenerateSlots(
+                    SlotDurationInMinutes, command, provider.Slots);
 
-                while (startTime < command.EndUtc)
-                {
-                    // ensure a slot does not already exist prior to creating a new one
-                    var slotExists = provider.Slots.Any(p => p.StartUtc == startTime);
-                    if (slotExists)
-                    {
-                        // log something?
-                        startTime = startTime.AddMinutes(SlotDurationInMinutes);
-                        continue;
-                    }
-
-                    provider.Slots.Add(new Infrastructure.Data.Entities.Slot()
-                    {
-                        StartUtc = startTime,
-                        EndUtc = startTime.AddMinutes(SlotDurationInMinutes),
-                        CreatedBy = command.ProviderId,
-                        CreatedUtc = _dateTimeProvider.UtcNow(),
-                        ProviderId = provider.Id,
-                        CorrelationId = command.CorrelationId
-                    });
-
-                    startTime = startTime.AddMinutes(SlotDurationInMinutes);
-                }
-
+                provider.Slots.AddRange(slots);
                 await _dataContext.SaveChangesAsync(cancellationToken);
 
                 return new Dto()

@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 
 using Henry.Scheduling.Api.Application.Appointment.Commands;
+using Henry.Scheduling.Api.Application.Slot.Commands;
 using Henry.Scheduling.Api.Common;
 using Henry.Scheduling.Api.Infrastructure.Jobs;
 
@@ -18,6 +19,7 @@ namespace Henry.Scheduling.Api
         {
             // services
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<IGenerateSlots, SlotGenerator>();
 
             // hangfire job
             services.AddScoped<IExpireReservations, ReservationExpiryJob>();
