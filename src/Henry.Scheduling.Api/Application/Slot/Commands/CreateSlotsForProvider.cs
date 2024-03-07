@@ -55,18 +55,15 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
             private readonly ILogger<CreateSlotsForProvider> _logger;
             private readonly AppDataContext _dataContext;
             private readonly IGenerateSlots _slotGenerator;
-            private readonly IDateTimeProvider _dateTimeProvider;
             private const int SlotDurationInMinutes = 15;
 
             public Handler(
                 ILogger<CreateSlotsForProvider> logger,
                 AppDataContext dataContext,
-                IGenerateSlots slotGenerator,
-                IDateTimeProvider dateTimeProvider)
+                IGenerateSlots slotGenerator)
             {
                 _logger = logger;
                 _dataContext = dataContext;
-                _dateTimeProvider = dateTimeProvider;
                 _slotGenerator = slotGenerator;
             }
 
