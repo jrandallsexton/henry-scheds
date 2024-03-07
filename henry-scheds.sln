@@ -22,8 +22,6 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "util", "util", "{5FEB5395-51E1-4135-8C12-22F56A80587E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Henry.Scheduling.Api.Util.Perf", "util\Henry.Scheduling.Api.Util.Perf\Henry.Scheduling.Api.Util.Perf.csproj", "{7BD659D6-CB0B-4ECD-ACD4-7782153DE035}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,10 +40,6 @@ Global
 		{176755FF-3802-46EF-92ED-D7F3B48AA961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{176755FF-3802-46EF-92ED-D7F3B48AA961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{176755FF-3802-46EF-92ED-D7F3B48AA961}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BD659D6-CB0B-4ECD-ACD4-7782153DE035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BD659D6-CB0B-4ECD-ACD4-7782153DE035}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BD659D6-CB0B-4ECD-ACD4-7782153DE035}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BD659D6-CB0B-4ECD-ACD4-7782153DE035}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,7 +47,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{FCDB2190-7F64-48C6-BEA9-8B2AEF8D6175} = {75077F58-986A-46B9-8BFF-627A09EBE08B}
 		{C43D538C-89C4-495F-A761-BDCD8D29309C} = {7F66B0D4-4215-4952-B852-52A9DC666931}
-		{7BD659D6-CB0B-4ECD-ACD4-7782153DE035} = {5FEB5395-51E1-4135-8C12-22F56A80587E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {02CC2234-C971-427D-B88B-3EDC7B0876B8}
