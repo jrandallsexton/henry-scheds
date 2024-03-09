@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Henry.Scheduling.Api.Extensions;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Henry.Scheduling.Api.Application.Slot.Queries
 {
@@ -41,27 +43,39 @@ namespace Henry.Scheduling.Api.Application.Slot.Queries
             private readonly AppDataContext _dataContext;
             private readonly IDateTimeProvider _dateTimeProvider;
             private readonly IMapper _mapper;
+            private readonly IDistributedCache _cache;
 
             public Handler(
                 AppDataContext dataContext,
                 IDateTimeProvider dateTimeProvider,
-                IMapper mapper)
+                IMapper mapper,
+                IDistributedCache cache)
             {
                 _dataContext = dataContext;
                 _dateTimeProvider = dateTimeProvider;
                 _mapper = mapper;
+                _cache = cache;
             }
 
             public async Task<List<Dto>> Handle(Query request, CancellationToken cancellationToken)
             {
+                var cachedSlots = await _cache.GetRecordAsync<List<Dto>>(nameof(GetAllAvailableSlots));
+                if (cachedSlots != null)
+                {
+                    return cachedSlots;
+                }
+
                 var slots = await _dataContext
                     .Slots
                     .Where(x => x.AppointmentId == null && x.StartUtc >= _dateTimeProvider.UtcNow().AddHours(24))
                     .OrderBy(x => x.StartUtc)
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
+                //return _mapper.Map<List<Dto>>(slots);
 
-                return _mapper.Map<List<Dto>>(slots);
+                cachedSlots = _mapper.Map<List<Dto>>(slots);
+                await _cache.SetRecordAsync(nameof(GetAllAvailableSlots), cachedSlots);
+                return cachedSlots;
             }
         }
     }

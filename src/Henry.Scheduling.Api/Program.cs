@@ -15,15 +15,20 @@ using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Serilog;
 
+using StackExchange.Redis;
+
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using StackExchange.Redis.Configuration;
 
 namespace Henry.Scheduling.Api
 {
@@ -71,6 +76,20 @@ namespace Henry.Scheduling.Api
             {
                 options.EnableSensitiveDataLogging();
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AppDataContext"));
+            });
+
+            // Add Caching
+            //builder.Services.AddSingleton<IConnectionMultiplexer>(options => 
+            //    ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
+
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = builder.Configuration.GetConnectionString("Redis");
+                //options.ConfigurationOptions = new ConfigurationOptions()
+                //{
+                //    DefaultDatabase = 1
+                //};
+                options.InstanceName = "HSA_"; // Henry.Scheduling.Api acronym (only one app using; good practice)
             });
 
             builder.Services.AddSwaggerGen(options =>
