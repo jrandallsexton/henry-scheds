@@ -76,7 +76,7 @@ Small API for facilitating client-provider reservations (appointments) based on 
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
 - MediatR handlers use nested classes; this is not normal (outside of MediatR/CQRS) and can easily be reworked into a single-class/file pattern. This approach, however, makes the handler a fully self-contained unit.  [_For those unaccustomed to working with this, it might seem odd - or even incorrect_.]
 - EF entities are not optimized; better structure(s) could likely be had
-- No caching is involved
+- ~~No caching is involved~~ (03/11 - simple caching with Redis and MediatR's IPipelineBehavior)
 - Perhaps your team prefers:
     - minimal APIs
     - separate assemblies for contracts or some other relation of classes
