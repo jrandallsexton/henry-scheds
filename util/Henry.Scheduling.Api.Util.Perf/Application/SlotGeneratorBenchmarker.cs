@@ -28,14 +28,14 @@ namespace Henry.Scheduling.Api.Util.Perf.Application
         }
 
         [Benchmark]
-        public new List<Infrastructure.Data.Entities.Slot> GenerateSlots()
+        public List<Infrastructure.Data.Entities.Slot> GenerateSlots()
         {
             var slotGenerator = new SlotGenerator(new DateTimeProvider());
             return slotGenerator.GenerateSlots(generatedSlotDurationInMinutes, _command, _existingSlots);
         }
 
         [Benchmark]
-        public new List<Infrastructure.Data.Entities.Slot> GenerateSlotsNew()
+        public List<Infrastructure.Data.Entities.Slot> GenerateSlotsNew()
         {
             var slotGenerator = new NewSlotGenerator(new DateTimeProvider());
             return slotGenerator.GenerateSlots(generatedSlotDurationInMinutes, _command, _existingSlots);

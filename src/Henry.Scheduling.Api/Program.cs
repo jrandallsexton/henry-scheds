@@ -15,15 +15,20 @@ using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Serilog;
 
+using StackExchange.Redis;
+
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using StackExchange.Redis.Configuration;
 
 namespace Henry.Scheduling.Api
 {
@@ -37,8 +42,6 @@ namespace Henry.Scheduling.Api
             builder.Services.AddControllers();
 
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CorrelationIdBehavior<,>));
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Middleware.ValidationBehavior<,>));
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -64,13 +67,23 @@ namespace Henry.Scheduling.Api
 
             // Add MediatR
             builder.Services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(hostAssembly));
+                    cfg.RegisterServicesFromAssembly(hostAssembly))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(CorrelationIdBehavior<,>))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(QueryCachingBehavior<,>))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(Middleware.ValidationBehavior<,>));
 
             // Add Data Persistence
             builder.Services.AddDbContext<AppDataContext>(options =>
             {
                 options.EnableSensitiveDataLogging();
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AppDataContext"));
+            });
+
+            // Add Caching
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = builder.Configuration.GetConnectionString("Redis");
+                options.InstanceName = "HSA_"; // Henry.Scheduling.Api acronym (only one app using; good practice)
             });
 
             builder.Services.AddSwaggerGen(options =>
