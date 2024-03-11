@@ -2,25 +2,26 @@
 
 using Henry.Scheduling.Api.Common;
 using Henry.Scheduling.Api.Common.Mapping;
+using Henry.Scheduling.Api.Common.Queries;
+using Henry.Scheduling.Api.Extensions;
 using Henry.Scheduling.Api.Infrastructure.Data;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Henry.Scheduling.Api.Extensions;
-using Microsoft.Extensions.Caching.Distributed;
 
 namespace Henry.Scheduling.Api.Application.Slot.Queries
 {
     public class GetAllAvailableSlots
     {
-        public class Query : IRequest<List<Dto>> { }
+        public class Query : CacheableQuery<List<Dto>> { }
 
         public class Dto : IMapFrom<Infrastructure.Data.Entities.Slot>
         {
@@ -59,11 +60,11 @@ namespace Henry.Scheduling.Api.Application.Slot.Queries
 
             public async Task<List<Dto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var cachedSlots = await _cache.GetRecordAsync<List<Dto>>(nameof(GetAllAvailableSlots));
-                if (cachedSlots != null)
-                {
-                    return cachedSlots;
-                }
+                //var cachedSlots = await _cache.GetRecordAsync<List<Dto>>(nameof(GetAllAvailableSlots));
+                //if (cachedSlots != null)
+                //{
+                //    return cachedSlots;
+                //}
 
                 var slots = await _dataContext
                     .Slots
@@ -71,11 +72,11 @@ namespace Henry.Scheduling.Api.Application.Slot.Queries
                     .OrderBy(x => x.StartUtc)
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
-                //return _mapper.Map<List<Dto>>(slots);
+                return _mapper.Map<List<Dto>>(slots);
 
-                cachedSlots = _mapper.Map<List<Dto>>(slots);
-                await _cache.SetRecordAsync(nameof(GetAllAvailableSlots), cachedSlots);
-                return cachedSlots;
+                //cachedSlots = _mapper.Map<List<Dto>>(slots);
+                //await _cache.SetRecordAsync(nameof(GetAllAvailableSlots), cachedSlots);
+                //return cachedSlots;
             }
         }
     }

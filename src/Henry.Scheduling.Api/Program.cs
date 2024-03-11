@@ -42,8 +42,6 @@ namespace Henry.Scheduling.Api
             builder.Services.AddControllers();
 
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CorrelationIdBehavior<,>));
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Middleware.ValidationBehavior<,>));
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -69,7 +67,10 @@ namespace Henry.Scheduling.Api
 
             // Add MediatR
             builder.Services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(hostAssembly));
+                    cfg.RegisterServicesFromAssembly(hostAssembly))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(CorrelationIdBehavior<,>))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(QueryCachingBehavior<,>))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(Middleware.ValidationBehavior<,>));
 
             // Add Data Persistence
             builder.Services.AddDbContext<AppDataContext>(options =>
@@ -79,16 +80,9 @@ namespace Henry.Scheduling.Api
             });
 
             // Add Caching
-            //builder.Services.AddSingleton<IConnectionMultiplexer>(options => 
-            //    ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")));
-
             builder.Services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = builder.Configuration.GetConnectionString("Redis");
-                //options.ConfigurationOptions = new ConfigurationOptions()
-                //{
-                //    DefaultDatabase = 1
-                //};
                 options.InstanceName = "HSA_"; // Henry.Scheduling.Api acronym (only one app using; good practice)
             });
 
