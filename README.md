@@ -14,7 +14,7 @@ Small API for facilitating client-provider reservations (appointments) based on 
 ## Decisions
 - [Vertical Slice Architecture](https://www.jimmybogard.com/vertical-slice-architecture/)
 - Use of [MediatR](https://github.com/jbogard/MediatR) and [CQRS](https://martinfowler.com/bliki/CQRS.html) pattern for handling API actions
-- SQL Server for persistence
+- ~~SQL Server for persistence~~ (03/11 swapped over to PGSQL; including Hangfire persistence)
 - [FluentValidation](https://docs.fluentvalidation.net/en/latest/) for ensuring integrity of commands and queries
 - [Automapper](https://automapper.org/) for simple mapping of entities to DTOs
 - [MediatR](https://github.com/jbogard/MediatR) handlers use dbContext directly instead of a repository (time constraints)

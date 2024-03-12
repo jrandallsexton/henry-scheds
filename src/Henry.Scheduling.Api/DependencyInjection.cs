@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
+using Hangfire.PostgreSql;
 
 namespace Henry.Scheduling.Api
 {
@@ -32,7 +33,12 @@ namespace Henry.Scheduling.Api
 
         public static IServiceCollection ConfigureHangfire(this IServiceCollection services, IConfiguration config)
         {
-            services.AddHangfire(x => x.UseSqlServerStorage(config.GetConnectionString("Hangfire")));
+            //services.AddHangfire(x => x.UseSqlServerStorage(config.GetConnectionString("Hangfire")));
+            //services.AddHangfire(x => x.UsePostgreSqlStorage(config.GetConnectionString("Hangfire")));
+            services.AddHangfire(x => x.UsePostgreSqlStorage(options =>
+            {
+                options.UseNpgsqlConnection(config.GetConnectionString("Hangfire"));
+            }));
             services.AddHangfireServer(serverOptions =>
             {
                 serverOptions.WorkerCount = Environment.ProcessorCount;

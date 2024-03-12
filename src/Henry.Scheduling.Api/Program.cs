@@ -15,20 +15,15 @@ using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Serilog;
 
-using StackExchange.Redis;
-
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using StackExchange.Redis.Configuration;
 
 namespace Henry.Scheduling.Api
 {
@@ -76,7 +71,7 @@ namespace Henry.Scheduling.Api
             builder.Services.AddDbContext<AppDataContext>(options =>
             {
                 options.EnableSensitiveDataLogging();
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AppDataContext"));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("AppDataContext"));
             });
 
             // Add Caching
