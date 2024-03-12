@@ -39,6 +39,7 @@ Small API for facilitating client-provider reservations (appointments) based on 
     -  Newer approach would likely use [MassTransit](https://masstransit.io/documentation/patterns/transactional-outbox) as the pattern is supported out-of-the-box and allows for provider-agnostic usage
 - No repositories exist; direct usage of dbContext within MediatR handlers
 - No authentication or authorization
+- OpenTelemetry to allow scraping by something like Prometheus to generate visuals via Grafana
 - Unit testing is minimal; only a couple of classes implemented to show general testing setups (TDD not utilized)
 - A provider (if also a client) could theoretically schedule an appointment (i.e. reserve a slot) with themself
 - No rate limiting
