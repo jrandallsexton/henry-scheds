@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 
-using Henry.Scheduling.Api.Common;
 using Henry.Scheduling.Api.Common.Commands;
 using Henry.Scheduling.Api.Common.Exceptions;
 using Henry.Scheduling.Api.Infrastructure.Data;
@@ -86,6 +85,9 @@ namespace Henry.Scheduling.Api.Application.Slot.Commands
                     SlotDurationInMinutes, command, provider.Slots);
 
                 provider.Slots.AddRange(slots);
+
+                // TODO: Raise domain/integration event here (ProviderScheduleCreated) for downstream consumers
+
                 await _dataContext.SaveChangesAsync(cancellationToken);
 
                 return new Dto()

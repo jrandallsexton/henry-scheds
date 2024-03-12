@@ -70,6 +70,8 @@ namespace Henry.Scheduling.Api.Application.Provider.Commands
 
                 var provider = Map(command);
                 await _dbContext.Providers.AddAsync(provider, cancellationToken);
+
+                // TODO: raise domain/integration event here (ProviderCreated)
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
                 return new Dto()

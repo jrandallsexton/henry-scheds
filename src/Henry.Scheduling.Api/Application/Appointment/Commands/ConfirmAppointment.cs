@@ -72,7 +72,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
                 appointment.ConfirmedUtc = _dateTimeProvider.UtcNow();
 
-                // TODO: Raise integration event for downstream consumers (e.g. notification svc to send email to client)
+                // TODO: Raise integration event (AppointmentConfirmed) for downstream consumers (e.g. notification svc to send email to client)
 
                 return new Dto()
                 {

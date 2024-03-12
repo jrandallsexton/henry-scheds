@@ -100,7 +100,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
                 slot.AppointmentId = appointment.Id;
 
-                // TODO: Raise integration event; downstream service will likely send confirmation email to client
+                // TODO: Raise integration event (AppointmentCreated); downstream service will likely send confirmation email to client
 
                 await _dataContext.SaveChangesAsync(cancellationToken);
 

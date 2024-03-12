@@ -47,7 +47,7 @@ namespace Henry.Scheduling.Api.Application.Appointment.Commands
 
             // TODO: Raise a domain event here - downstream might want to release the slot
 
-            // TODO: Raise integration event here - some other service will likely want to send
+            // TODO: Raise integration event here (AppointmentExpired) - some other service will likely want to send
             // a notification to the client that the reservation was not confirmed
             // and that the appointment was expired
 

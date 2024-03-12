@@ -62,11 +62,10 @@ namespace Henry.Scheduling.Api
             builder.Services.AddAutoMapper(hostAssembly);
 
             // Add MediatR
-            builder.Services.AddMediatR(cfg =>
-                    cfg.RegisterServicesFromAssembly(hostAssembly))
-                .AddScoped(typeof(IPipelineBehavior<,>), typeof(CorrelationIdBehavior<,>))
-                .AddScoped(typeof(IPipelineBehavior<,>), typeof(QueryCachingBehavior<,>))
-                .AddScoped(typeof(IPipelineBehavior<,>), typeof(Middleware.ValidationBehavior<,>));
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(hostAssembly))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(CorrelationIdBehavior<,>))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(QueryCachingBehavior<,>))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(Middleware.ValidationBehavior<,>));
 
             // Add Data Persistence
             builder.Services.AddDbContext<AppDataContext>(options =>
