@@ -43,6 +43,10 @@ Small API for facilitating client-provider reservations (appointments) based on 
 - A provider (if also a client) could theoretically schedule an appointment (i.e. reserve a slot) with themself
 - No rate limiting
 - No response compression
+- Soft-deletes via EntityBase property of DeletedBy and DeletedUtc
+- Configuration should be added for things like
+    - amount of time elapsed for appointment expiration
+    - etc.
 - etc., etc., etc.
 
 ## Running the Service
@@ -64,6 +68,13 @@ Small API for facilitating client-provider reservations (appointments) based on 
     - POST to: api/providers/{id}/schedule
         - handler will create slots based on start/end utc dateTimes
 - Postman collection can be found [here](https://app.getpostman.com/join-team?invite_code=49b6a916a157048a07167d94568cbf66)
+- pgAdmin available on: http://localhost:8888    
+    - username: test@test.com
+    - password: dbadmin
+    - Add Server:
+        - server: host.docker.internal
+        - username: postgresql
+        - password: postgresql
 
 ## Closing Thoughts
 - Project should have just been named Henry.Scheduling and not Henry.Scheduling.Api
@@ -76,6 +87,7 @@ Small API for facilitating client-provider reservations (appointments) based on 
 - Most of the code (except for _domain-specific_ items) was recycled from previous projects
 - MediatR handlers use nested classes; this is not normal (outside of MediatR/CQRS) and can easily be reworked into a single-class/file pattern. This approach, however, makes the handler a fully self-contained unit.  [_For those unaccustomed to working with this, it might seem odd - or even incorrect_.]
 - EF entities are not optimized; better structure(s) could likely be had
+- Prefer use of environment variables over app config
 - ~~No caching is involved~~ (03/11 - simple caching with Redis and MediatR's IPipelineBehavior)
 - Perhaps your team prefers:
     - minimal APIs

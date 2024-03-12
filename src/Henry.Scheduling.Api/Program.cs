@@ -23,6 +23,7 @@ using Serilog;
 
 using System;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Henry.Scheduling.Api
@@ -101,7 +102,11 @@ namespace Henry.Scheduling.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.HeadContent = "<a href=\"https://localhost:5001/dashboard\" target=\"_blank\">Hangfire Dashboard</a></br><a href=\"http://localhost:8081/#/events?range=1d\" target=\"_blank\">Seq</a>";
+                    var links = new StringBuilder();
+                    links.AppendLine("<a href=\"https://localhost:5001/dashboard\" target=\"_blank\">Hangfire Dashboard</a></br>");
+                    links.AppendLine("<a href=\"http://localhost:8081/#/events?range=1d\" target=\"_blank\">Seq</a></br>");
+                    links.AppendLine("<a href=\"http://localhost:8888\" target=\"_blank\">pgAdmin</a></br>");
+                    options.HeadContent = links.ToString();
                 });
                 app.UseHangfireDashboard("/dashboard", new DashboardOptions
                 {

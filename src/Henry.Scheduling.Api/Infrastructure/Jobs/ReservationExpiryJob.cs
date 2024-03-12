@@ -37,15 +37,18 @@ namespace Henry.Scheduling.Api.Infrastructure.Jobs
         {
             _logger.LogInformation($"Started {nameof(ReservationExpiryJob)}");
 
-            // get expired appointments
+            // get appointments that need to expire and are not already expired
+            // TODO: Make the expiration limit configurable
             var expiredAppointments = await _dataContext
                 .Appointments
-                .Where(a => a.CreatedUtc.AddMinutes(30) > _dateTimeProvider.UtcNow())
+                .Where(a => a.CreatedUtc.AddMinutes(30) < _dateTimeProvider.UtcNow() &&
+                            a.ExpiredUtc == null)
                 .AsNoTracking()
                 .ToListAsync();
 
             _logger.LogInformation("Found {expiredReservationsCount} reservations to expire", expiredAppointments.Count);
 
+            // TODO: This needs to be moved into a different class to enable unit testing
             // send them off for cancellation and downstream tasks
             expiredAppointments.ForEach(x =>
             {

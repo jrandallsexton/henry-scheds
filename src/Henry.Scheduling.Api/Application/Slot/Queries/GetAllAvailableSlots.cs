@@ -68,7 +68,8 @@ namespace Henry.Scheduling.Api.Application.Slot.Queries
 
                 var slots = await _dataContext
                     .Slots
-                    .Where(x => x.AppointmentId == null && x.StartUtc >= _dateTimeProvider.UtcNow().AddHours(24))
+                    .Where(x => x.AppointmentId == null &&
+                                x.StartUtc >= _dateTimeProvider.UtcNow().AddHours(24))
                     .OrderBy(x => x.StartUtc)
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
