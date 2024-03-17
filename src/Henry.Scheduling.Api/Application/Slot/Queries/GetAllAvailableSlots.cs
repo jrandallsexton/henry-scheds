@@ -44,28 +44,19 @@ namespace Henry.Scheduling.Api.Application.Slot.Queries
             private readonly AppDataContext _dataContext;
             private readonly IDateTimeProvider _dateTimeProvider;
             private readonly IMapper _mapper;
-            private readonly IDistributedCache _cache;
 
             public Handler(
                 AppDataContext dataContext,
                 IDateTimeProvider dateTimeProvider,
-                IMapper mapper,
-                IDistributedCache cache)
+                IMapper mapper)
             {
                 _dataContext = dataContext;
                 _dateTimeProvider = dateTimeProvider;
                 _mapper = mapper;
-                _cache = cache;
             }
 
             public async Task<List<Dto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                //var cachedSlots = await _cache.GetRecordAsync<List<Dto>>(nameof(GetAllAvailableSlots));
-                //if (cachedSlots != null)
-                //{
-                //    return cachedSlots;
-                //}
-
                 var slots = await _dataContext
                     .Slots
                     .Where(x => x.AppointmentId == null &&
@@ -74,10 +65,6 @@ namespace Henry.Scheduling.Api.Application.Slot.Queries
                     .AsNoTracking()
                     .ToListAsync(cancellationToken);
                 return _mapper.Map<List<Dto>>(slots);
-
-                //cachedSlots = _mapper.Map<List<Dto>>(slots);
-                //await _cache.SetRecordAsync(nameof(GetAllAvailableSlots), cachedSlots);
-                //return cachedSlots;
             }
         }
     }
